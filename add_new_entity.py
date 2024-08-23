@@ -21,13 +21,9 @@ file_name = d['_source']['meta_data']['file_name']
 snippet = d['_source']['snippet']
 new_doc = snippet
 bm25_ef.add_single_doc(new_doc)
+bm25_ef.save('mymodel.json')
 # bm25_vector = bm25_ef.encode_documents([snippet])
 # entity = [[_id],[file_name],bm25_vector, [snippet]]
-
 # bm25_test = Collection("bm25_test", consistency_level="Strong")
 # bm25_test.load()
 # bm25_test.insert(entity)
-
-vec = bm25_ef.encode_documents([data[2]['_source']['snippet']])
-for e in vec:
-    print(e)
