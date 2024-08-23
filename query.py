@@ -27,7 +27,7 @@ res = client.search(
     anns_field="bm25_vector",
     limit=4,
     search_params={"metric_type": "IP", "params": {}},
-    output_fields =["id", "file_name", "snippet"]
+    output_fields=["id", "file_name", "snippet"]
 )
 end_time = time.time()
 print("total time cost:", end_time-start_time)
