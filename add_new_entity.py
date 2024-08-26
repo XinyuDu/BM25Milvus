@@ -13,17 +13,19 @@ analyzer = build_default_analyzer(language="zh")
 
 # Use the analyzer to instantiate the BM25EmbeddingFunction
 bm25_ef = BM25Milvus(analyzer, chunk_size=500)
-bm25_ef.load('0-3.json')
+bm25_ef.load('mymodel.json')
 
-d = data[3]
-_id = d['_id']
-file_name = d['_source']['meta_data']['file_name']
-snippet = d['_source']['snippet']
-new_doc = snippet
-bm25_ef.add_single_doc(new_doc)
+bm25_test = Collection("bm25_test", consistency_level="Strong")
+bm25_test.load()
+
+for d in data[3:]:
+    _id = d['_id']
+    file_name = d['_source']['meta_data']['file_name']
+    snippet = d['_source']['snippet']
+    new_doc = snippet
+    bm25_ef.add_single_doc(new_doc)
+    bm25_vector = bm25_ef.encode_documents([snippet])
+    entity = [[_id],[file_name],bm25_vector, [snippet]]
+    bm25_test.insert(entity)
+
 bm25_ef.save('mymodel.json')
-# bm25_vector = bm25_ef.encode_documents([snippet])
-# entity = [[_id],[file_name],bm25_vector, [snippet]]
-# bm25_test = Collection("bm25_test", consistency_level="Strong")
-# bm25_test.load()
-# bm25_test.insert(entity)
